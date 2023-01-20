@@ -1,2 +1,95 @@
-function iniciarApp(){navegacionFija(),crearGaleria(),scrollNav()}function navegacionFija(){const e=document.querySelector("header"),t=document.querySelector(".sobre-festival"),o=document.querySelector("body");window.addEventListener("scroll",(function(){console.log(t.getBoundingClientRect()),t.getBoundingClientRect().top<0?(e.classList.add("fijo"),o.classList.add("body-scroll")):(e.classList.remove("fijo"),o.classList.remove("body-scroll"))}))}function scrollNav(){document.querySelectorAll(".navegacion-principal a ").forEach(e=>{e.addEventListener("click",(function(e){e.preventDefault();const t=e.target.attributes.href.value;document.querySelector(t).scrollIntoView({behavior:"smooth"})}))})}function crearGaleria(){const e=document.querySelector(".galeria-imagenes");for(let t=1;t<=12;t++){const o=document.createElement("picture");console.log(o),o.innerHTML=`<source srcset="build/img/thumb/${t}.avif" type="image/avif"><source srcset="build/img/thumb/${t}.webp" type="image/webp"><img loading="lazy" width="200" height="200" src="build/img/thumb/${t}.jpg" alt="">`,o.onclick=function(){mostrandoImagen(t)},e.appendChild(o)}}function mostrandoImagen(e){const t=document.createElement("picture");console.log(t),t.innerHTML=`<source srcset="build/img/grande/${e}.avif" type="image/avif"><source srcset="build/img/grande/${e}.webp" type="image/webp"><img loading="lazy" width="200" height="200" src="build/img/grande/${e}.jpg" alt="">`;const o=document.createElement("DIV");o.appendChild(t),o.classList.add("overlay"),o.onclick=function(){document.querySelector("body").classList.remove("fijar-body"),o.remove()};const n=document.createElement("P");n.textContent="X",n.classList.add("btn-cerrar"),n.onclick=function(){document.querySelector("body").classList.remove("fijar-body"),o.remove()},o.appendChild(n);const c=document.querySelector("body");c.appendChild(o),c.classList.add("fijar-body")}document.addEventListener("DOMContentLoaded",(function(){iniciarApp()}));
-//# sourceMappingURL=app.js.map
+document.addEventListener('DOMContentLoaded', function(){
+    iniciarApp();
+});
+
+function iniciarApp() {
+    navegacionFija();
+    crearGaleria();
+    scrollNav();
+}
+
+function navegacionFija() {
+    const barra = document.querySelector('.header');
+    const sobreFestival = document.querySelector('.sobre-festival');
+    const body = document.querySelector('body');
+
+
+    window.addEventListener('scroll', function() {
+        if( sobreFestival.getBoundingClientRect().bottom < 0  ) {
+            barra.classList.add('fijo');
+            body.classList.add('body-scroll');
+        } else {
+            barra.classList.remove('fijo');
+            body.classList.remove('body-scroll');
+        }
+    });
+}
+
+
+function scrollNav() {
+    const enlaces = document.querySelectorAll('.navegacion-principal a');
+
+    enlaces.forEach( enlace => {
+        enlace.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const seccionScroll = e.target.attributes.href.value;
+            const seccion = document.querySelector(seccionScroll);
+            seccion.scrollIntoView({ behavior: "smooth"});
+        });
+    });
+}
+
+function crearGaleria() {
+    const galeria = document.querySelector('.galeria-imagenes');
+
+    for(let i = 1; i <= 12; i++ ) {
+        const imagen = document.createElement('picture');
+        imagen.innerHTML = `
+            <source srcset="build/img/thumb/${i}.avif" type="image/avif">
+            <source srcset="build/img/thumb/${i}.webp" type="image/webp">
+            <img loading="lazy" width="200" height="300" src="build/img/thumb/${i}.jpg" alt="imagen galeria">
+        `;
+        imagen.onclick = function() {
+            mostrarImagen(i);
+        }
+
+        galeria.appendChild(imagen);
+    }
+}  
+
+
+function mostrarImagen(id) {
+    const imagen = document.createElement('picture');
+    imagen.innerHTML = `
+        <source srcset="build/img/grande/${id}.avif" type="image/avif">
+        <source srcset="build/img/grande/${id}.webp" type="image/webp">
+        <img loading="lazy" width="200" height="300" src="build/img/grande/${id}.jpg" alt="imagen galeria">
+    `;
+
+    // Crea el Overlay con la imagen
+    const overlay = document.createElement('DIV');
+    overlay.appendChild(imagen);
+    overlay.classList.add('overlay');
+    overlay.onclick = function() {
+        const body = document.querySelector('body');
+        body.classList.remove('fijar-body');
+        overlay.remove();
+    }
+
+    // Boton para cerrar el Modal
+    const cerrarModal = document.createElement('P');
+    cerrarModal.textContent = 'X';
+    cerrarModal.classList.add('btn-cerrar');
+    cerrarModal.onclick = function() {
+        const body = document.querySelector('body');
+        body.classList.remove('fijar-body');
+        overlay.remove();
+    }
+    overlay.appendChild(cerrarModal);
+
+    // Añadirlo al HTML
+    const body = document.querySelector('body');
+    body.appendChild(overlay);
+    body.classList.add('fijar-body');
+}
